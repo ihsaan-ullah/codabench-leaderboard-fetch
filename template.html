@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best Results Table</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: white;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #012041;
+      color: white;
+      cursor: pointer;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    /* Highlight top 3 */
+    .rank-1 {
+      background: linear-gradient(90deg, #fff3c4, #ffe793);
+      font-weight: 600;
+    }
+
+    .rank-2 {
+      background: linear-gradient(90deg, #dbe9ff, #b3d1ff);
+      font-weight: 600;
+    }
+
+    .rank-3 {
+      background: linear-gradient(90deg, #ffe3e8, #ffbcc7);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Codabench Leaderboard for Competition "COMPETITION_ID" </h1>
+  <table id="results-table">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">Rank</th>
+        <th onclick="sortTable(1)">Username</th>
+        <th onclick="sortTable(2)">Submission ID</th>
+        <th onclick="sortTable(3)">Method Name</th>
+        <th onclick="sortTable(4)">Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in results %}
+      <tr class="rank-{{ loop.index if loop.index <= 3 }}">
+        <td>{{ loop.index }}</td>
+        <td>{{ item.username }}</td>
+        <td>{{ item.submission_id }}</td>
+        <td>{{ item.method_name }}</td>
+        <td>{{ "%.4f"|format(item.score) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <script>
+  function sortTable(n) {
+    const table = document.getElementById("results-table");
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    const th = table.querySelectorAll("th")[n];
+
+    // Toggle direction on repeated clicks
+    let dir = th.dataset.dir === "asc" ? "desc" : "asc";
+    th.dataset.dir = dir;
+
+    // Sort rows based on column content
+    rows.sort((a, b) => {
+      let x = a.cells[n].innerText.trim();
+      let y = b.cells[n].innerText.trim();
+      const isNumeric = !isNaN(parseFloat(x)) && isFinite(x);
+      if (isNumeric) {
+        x = parseFloat(x);
+        y = parseFloat(y);
+      }
+      if (dir === "asc") {
+        return x > y ? 1 : x < y ? -1 : 0;
+      } else {
+        return x < y ? 1 : x > y ? -1 : 0;
+      }
+    });
+
+    // Rebuild the table with sorted rows
+    rows.forEach(row => tbody.appendChild(row));
+  }
+</script>
+
+
+</body>
+</html>
