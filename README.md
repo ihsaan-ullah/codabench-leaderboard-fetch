@@ -20,7 +20,7 @@ To run the entry point script, you can use the following command:
 python3 run_leaderboard_pipeline.py
 ```
 
-Note: You can skip one of the scripts by updating `config.py` or you can totally skip this entry point step and run the scripts individually. See the next steps below.
+NOTE: You can skip one of the scripts by updating `config.py` or you can totally skip this entry point step and run the scripts individually. See the next steps below.
 
 ## 1. Fetch Leaderboard Results
 This script uses the credentials configured in `.env` file to login to Codabench to get Auth Token. It then uses the config variables from `config.py` and Auth Token to fetch the leaderboard entries. The script saves the leaderboard result in a json file.
@@ -55,6 +55,12 @@ To run `deploy_results_html.py` script, you can use the following command:
 ```
 python3 deploy_results_html.py
 ```
+
+## 5. (Optional) GitHub Workflow for Branch Auto Merge 
+This is an optional GitHub workflow file that you can use to auto merge leaderboard update branches created by Step 4.
+
+To use `leaderboard-results-auto-pr-merge.yaml` workflow, add it to `.github/workflows/` in your GitHub repository
+NOTE: You may need a GitHub Personal Access Token (PAT) added to the repository secrets to make this workflow work.
 
 ## Contact
 For any questions contact by email: `ihsan2131@gmail.com`
